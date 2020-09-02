@@ -132,6 +132,13 @@ if ($QST_system === 'country') {
                     $id = '';
                 }
 
+                // Only display Confirm email for
+                if (empty($QST_system)
+                    || (! empty($QST_system) && $QST_system !== EEM_Attendee::system_question_email_confirm)
+                ) {
+                    unset($question_types[ EEM_Question::QST_type_email_confirm ]);
+                }
+
                 echo EEH_Form_Fields::select_input(
                     'QST_type' . $id,
                     $question_types,
@@ -403,4 +410,3 @@ if ($QST_system === 'country') {
 
 <?php
     do_action('AHEE__questions_main_meta_box__template__after_admin_page_content', $question);
-?>

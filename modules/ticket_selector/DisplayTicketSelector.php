@@ -203,6 +203,11 @@ class DisplayTicketSelector
         if (! $this->setEvent($event)) {
             return false;
         }
+        // is the event expired ?
+        $template_args['event_is_expired'] = ! is_admin() ? $this->event->is_expired() : false;
+        if ($template_args['event_is_expired']) {
+            return $this->expiredEventMessage();
+        }
         // begin gathering template arguments by getting event status
         $template_args = array('event_status' => $this->event->get_active_status());
         if ($this->activeEventAndShowTicketSelector(
@@ -216,11 +221,6 @@ class DisplayTicketSelector
         $this->setMaxAttendees($this->event->additional_limit());
         if ($this->getMaxAttendees() < 1) {
             return $this->ticketSalesClosedMessage();
-        }
-        // is the event expired ?
-        $template_args['event_is_expired'] = ! is_admin() ? $this->event->is_expired() : false;
-        if ($template_args['event_is_expired']) {
-            return $this->expiredEventMessage();
         }
         // get all tickets for this event ordered by the datetime
         $tickets = $this->getTickets();
@@ -655,7 +655,7 @@ class DisplayTicketSelector
         $html .= '<input id="ticket-selector-submit-' . $this->event->ID() . '-btn"';
         $html .= ' class="ticket-selector-submit-btn ';
         $html .= empty($external_url) ? 'ticket-selector-submit-ajax"' : '"';
-        $html .= ' type="submit" value="' . $btn_text . '" />';
+        $html .= ' type="submit" value="' . $btn_text . '" data-ee-disable-after-recaptcha="true" />';
         $html .= EEH_HTML::divx() . '<!-- .ticket-selector-submit-btn-wrap -->';
         $html .= apply_filters(
             'FHEE__EE_Ticket_Selector__after_ticket_selector_submit',
@@ -687,7 +687,7 @@ class DisplayTicketSelector
                 __LINE__
             );
         }
-        $view_details_btn = '<form method="POST" action="';
+        $view_details_btn = '<form method="GET" action="';
         $view_details_btn .= apply_filters(
             'FHEE__EE_Ticket_Selector__display_view_details_btn__btn_url',
             $this->event->get_permalink(),
