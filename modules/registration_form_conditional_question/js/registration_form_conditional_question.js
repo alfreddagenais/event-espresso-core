@@ -1,0 +1,1 @@
+console.log( 'registration_form_conditional_question.js init' );
