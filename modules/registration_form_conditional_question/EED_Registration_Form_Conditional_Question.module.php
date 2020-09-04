@@ -59,7 +59,7 @@ class EED_Registration_Form_Conditional_Question extends EED_Module
         ob_start();
         // set ajax hooks here
 
-        
+
 
     }
 
@@ -84,15 +84,13 @@ class EED_Registration_Form_Conditional_Question extends EED_Module
         define('RFCQ_JS_URL', plugin_dir_url(__FILE__) . 'js/');
         define('RFCQ_INC_PATH', RFCQ_BASE_PATH . 'inc/');
 
-        //EEH_Autoloader::register_autoloaders_for_each_file_in_folder(RFCQ_BASE_PATH, true);
+        //EEH_Autoloader::register_autoloaders_for_each_file_in_folder(RFCQ_BASE_PATH, true); // no needed for now
         EED_Registration_Form_Conditional_Question::instance()->enqueue_styles_and_scripts();
-
-
 
         /**
          * global action hook
          */
-        do_action('AHEE__EED_Registration_Form_Conditional_Question__set_definitions', self );
+        do_action('AHEE__EED_Registration_Form_Conditional_Question__set_definitions');
 
     }
 
